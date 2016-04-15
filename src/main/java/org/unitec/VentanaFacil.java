@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package org.unitec;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.sql.*;
 /**
  *
  * @author T-101
@@ -107,7 +108,18 @@ public class VentanaFacil extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             // TODO add your handling code here:
-            ModeloConexion.conectarse("root","");
+            //haremos una insercion con JDBC a tabla facil
+            //PASO 1: crear un objeto de tipo Conexion
+            
+            Connection con= ModeloConexion.conectarse("root","");
+            
+            //PASO 2: con esa conexion invocar un statement preparado
+            PreparedStatement st= con.prepareStatement("insert into FACIL(nombre, edad) values(?,?)");
+            st.setString(1,textoNombre.getText());
+            st.setInt(2,Integer.parseInt(textoEdad.getText()));
+            st.execute();
+            etiquetaInformacion.setText("Registro Insertado");
+            
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
